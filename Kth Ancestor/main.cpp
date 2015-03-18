@@ -11,6 +11,7 @@
 #include <set>
 #include <utility>
 #include <cassert>
+#include <fstream>
 using namespace std;
 
 class Tree{
@@ -72,29 +73,30 @@ public:
 int main(int argc, const char * argv[]) {
     
     int T;
-    cin >> T;
+    ifstream input("testcase.txt");
+    input >> T;
     for (int i=0; i<T; i++) {
         Tree tree;
         long P, X, Y;
-        cin >> P;
+        input >> P;
         for (long j=0; j<P; j++) {
-            cin >> X >> Y;
+            input >> X >> Y;
             tree.addNode(X, Y);
         }
         tree.complete(0);
         long Q, K;
         int command;
-        cin >> Q;
+        input >> Q;
         for (long j=0; j<Q; j++) {
-            cin >> command;
+            input >> command;
             if (command == 0) {
-                cin >> Y >> X;
+                input >> Y >> X;
                 tree.addLeaf(Y, X);
             }else if (command == 1){
-                cin >> X;
+                input >> X;
                 tree.removeLeaf(X);
             }else if (command == 2){
-                cin >> X >> K;
+                input >> X >> K;
                 cout << tree.query(X, K) << endl;
             }
         }
