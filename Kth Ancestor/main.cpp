@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <set>
 #include <utility>
+#include <queue>
 #include <cassert>
 using namespace std;
 
@@ -30,14 +31,20 @@ public:
         }
     }
     
-    void complete(long node){
-        for (long child: tree[node].second){
-            auto search = tree.find(child);
-            if (search != tree.end()) {
-                search->second.first = node;
-                complete(child);
-            }else{
-                tree[child] = make_pair(node, set<long>());
+    void complete(){
+        queue<long> cache;
+        cache.push(0);
+        while (!cache.empty()) {
+            long current = cache.front();
+            cache.pop();
+            for (long child: tree[current].second){
+                auto search = tree.find(child);
+                if (search != tree.end()) {
+                    search->second.first = current;
+                    cache.push(child);
+                }else{
+                    tree[child] = make_pair(current, set<long>());
+                }
             }
         }
     }
@@ -81,7 +88,7 @@ int main(int argc, const char * argv[]) {
             cin >> X >> Y;
             tree.addNode(X, Y);
         }
-        tree.complete(0);
+        tree.complete();
         long Q, K;
         int command;
         cin >> Q;
